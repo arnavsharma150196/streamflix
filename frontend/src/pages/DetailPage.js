@@ -78,14 +78,16 @@ export default function DetailPage({ item, isMovie, profile, onBack, api }) {
             setSelectedSeason(resumeEp.season || 1);
             setProgress(savedProgress);
           } else {
+            const firstEp = item.episodes[0];
             setSelectedEp(null);
             setSelectedSeason(1);
             setProgress(savedProgress);
           }
         })
         .catch(() => {
+          const firstEp = item.episodes[0];
           setSelectedEp(null);
-          setSelectedSeason(1);
+          setSelectedSeason(firstEp ? firstEp.season : 1);
         });
     }
   }, [isMovie, item.episodes, api, profile.id]);
