@@ -33,14 +33,21 @@ export default function MediaCard({ item, isMovie, profile, onSelect, api }) {
   return (
     <div
       onClick={() => onSelect(item, isMovie)}
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) onSelect(item, isMovie); // Enter/OK
+      }}
+      tabIndex={0}  // Makes it focusable
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}   // Show hover state when focused
+      onBlur={() => setHovered(false)}   
       style={{
         borderRadius: '8px', overflow: 'hidden',
         background: '#1a1a1a', cursor: 'pointer',
         transform: hovered ? 'scale(1.05)' : 'scale(1)',
         boxShadow: hovered ? '0 8px 32px rgba(0,0,0,0.7)' : 'none',
         transition: 'transform 0.2s, box-shadow 0.2s',
+        outline: hovered ? '2px solid #E50914' : 'none',
         marginBottom: '8px'
       }}
     >
