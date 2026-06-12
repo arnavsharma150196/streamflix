@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --red: #E50914;
+  --dark: #141414;
+  --card-bg: #1a1a1a;
+  --card-hover: #222;
+  --text: #ffffff;
+  --text-muted: #aaaaaa;
+  --border: #2a2a2a;
+}
+
+body {
+  background-color: var(--dark);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+button {
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── Responsive Grid ─────────────────────────────────────────── */
+.media-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 480px) {
+  .media-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .media-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 1100px) {
+  .media-grid { grid-template-columns: repeat(6, 1fr); }
+}
+
+@media (min-width: 1600px) {
+  .media-grid { grid-template-columns: repeat(8, 1fr); }
+}
+
+/* ── Responsive Page Padding ─────────────────────────────────── */
+.page-container {
+  padding: 32px 16px;
+}
+
+@media (min-width: 768px) {
+  .page-container { padding: 32px 48px; }
+}
+
+@media (min-width: 1600px) {
+  .page-container { padding: 48px 80px; }
+}
+
+/* ── Responsive Hero ─────────────────────────────────────────── */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  cursor: pointer;
+  background: #111;
+}
+
+@media (min-width: 768px) {
+  .hero-banner { height: 400px; }
+}
+
+@media (min-width: 1100px) {
+  .hero-banner { height: 500px; }
+}
+
+@media (min-width: 1600px) {
+  .hero-banner { height: 620px; }
+}
+
+.hero-title {
+  font-family: 'Bebas Neue';
+  font-size: 36px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  .hero-title { font-size: 52px; }
+}
+
+@media (min-width: 1100px) {
+  .hero-title { font-size: 64px; }
+}
+
+@media (min-width: 1600px) {
+  .hero-title { font-size: 80px; }
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  max-width: 90%;
+}
+
+@media (min-width: 768px) {
+  .hero-content { bottom: 48px; left: 48px; max-width: 520px; }
+}
+
+@media (min-width: 1600px) {
+  .hero-content { bottom: 64px; left: 80px; max-width: 680px; }
+}
+
+/* ── Responsive Page Title ───────────────────────────────────── */
+.page-title {
+  font-family: 'Bebas Neue';
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+
+@media (min-width: 768px) {
+  .page-title { font-size: 42px; }
+}
+
+@media (min-width: 1600px) {
+  .page-title { font-size: 56px; }
+}
+
+/* ── Navbar Responsive ───────────────────────────────────────── */
+.nav-tabs {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav-tabs { display: flex; align-items: center; gap: 32px; }
+}
+
+.nav-search {
+  flex: 0 0 200px;
+}
+
+@media (min-width: 768px) {
+  .nav-search { flex: 0 0 280px; }
+}
+
+@media (min-width: 1100px) {
+  .nav-search { flex: 0 0 320px; }
+}
+
+/* ── Mobile bottom nav ───────────────────────────────────────── */
+.mobile-bottom-nav {
+  display: flex;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.97);
+  border-top: 1px solid #222;
+  z-index: 99999;
+  padding: 8px 0 12px;
+}
+
+@media (min-width: 768px) {
+  .mobile-bottom-nav { display: none; }
+}
+
+.mobile-bottom-nav a, .mobile-bottom-nav span {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #888;
+  font-size: 10px;
+  font-family: 'Inter';
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.mobile-bottom-nav span.active {
+  color: #E50914;
+}
+
+/* ── Mobile padding for bottom nav ──────────────────────────── */
+@media (max-width: 767px) {
+  .page-container { padding-bottom: 80px; }
+}
+
+/* ── Fullscreen player ───────────────────────────────────────── */
+:fullscreen video {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+}
+
+:-webkit-full-screen video {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+}
+
+:fullscreen .next-ep-banner {
+  display: flex !important;
+}
+
+/* ── Hide native fullscreen button from video controls ── */
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
+}
+video::-webkit-media-controls-overflow-button {
+  display: none;
+}
+
+/* ── Fullscreen container fills entire screen ── */
+:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #000 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #000 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+:fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+  flex: 1 !important;
+  object-fit: contain !important;
+}
+
+:-webkit-full-screen video {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+  flex: 1 !important;
+  object-fit: contain !important;
+}
+
+/* Hide title bar in fullscreen */
+:fullscreen .player-title-bar {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s !important;
+}
+
+:-webkit-full-screen .player-title-bar {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s !important;
+}
+
+:fullscreen .player-title-bar:hover {
+  opacity: 1 !important;
+}
+
+:-webkit-full-screen .player-title-bar:hover {
+  opacity: 1 !important;
+}
+
+/* ── Navbar always on top and clickable ── */
+nav {
+  pointer-events: all !important;
+  z-index: 99999 !important;
+}
