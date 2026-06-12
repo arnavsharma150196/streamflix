@@ -176,6 +176,16 @@ const selectSubtitleTrack = async (track, ep) => {
         const blobUrl = URL.createObjectURL(res.data);
         setSubtitleUrl(blobUrl);
         setSelectedSubtitle(track.filename);
+        
+        // Force subtitle track to show
+        setTimeout(() => {
+          const video = videoRef.current;
+          if (video && video.textTracks.length > 0) {
+            for (let i = 0; i < video.textTracks.length; i++) {
+              video.textTracks[i].mode = 'showing';
+            }
+          }
+        }, 500);
       }
     } catch {
       setSubtitleUrl(null);
@@ -440,7 +450,7 @@ const selectSubtitleTrack = async (track, ep) => {
             <span>▶ {isMovie ? title : `${title} — S${String(selectedEp?.season || 1).padStart(2, '0')}E${String(selectedEp?.episode || 1).padStart(2, '0')}`}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               {/* Subtitle selector */}
-              {subtitleTracks.length > 1 && (
+              {subtitleTracks.length > 0 && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{ color: '#888', fontSize: '11px' }}>CC:</span>
                   {subtitleTracks.map(track => (
