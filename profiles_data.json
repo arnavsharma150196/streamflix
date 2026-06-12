@@ -1,0 +1,35 @@
+{
+    "dad": {
+        "favorites": [],
+        "continue_watching": {}
+    },
+    "mom": {
+        "favorites": [],
+        "continue_watching": {}
+    },
+    "arnav": {
+        "favorites": [],
+        "continue_watching": {
+            "the_night_shift_s01e01": 2393,
+            "forever_s01e01": 2472,
+            "forever_s01e02": 2527,
+            "forever_s01e03": 2478,
+            "forever_s01e04": 2430,
+            "the_eminence_in_shadow_s01e01": 648,
+            "the_eminence_in_shadow_s01e02": 1332,
+            "the_eminence_in_shadow_s01e03": 0,
+            "the_detour_s01e01": 1214,
+            "the_detour_s01e02": 848,
+            "stargate_1994": 2306,
+            "arifureta_s01e01": 1147
+        }
+    },
+    "sanya": {
+        "favorites": [],
+        "continue_watching": {}
+    },
+    "kuku": {
+        "favorites": [],
+        "continue_watching": {}
+    }
+}

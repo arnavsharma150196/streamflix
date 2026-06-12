@@ -1,0 +1,9 @@
+{
+    "profiles": [
+        {"id": "dad", "name": "Amit", "emoji": "👨"},
+        {"id": "mom", "name": "Renu", "emoji": "👩"},
+        {"id": "arnav", "name": "Arnav", "emoji": "👨"},
+        {"id": "sanya", "name": "Sanya", "emoji": "👩"},
+        {"id": "kuku", "name": "Anaaya", "emoji": "👩"}
+    ]
+}
