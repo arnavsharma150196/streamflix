@@ -378,6 +378,10 @@ def list_movie_subtitles(movie_key):
 
 # ── Health check ──────────────────────────────────────────────────────────────
 
+@app.route("/api/ping")
+def ping():
+    return jsonify({"status": "awake"})
+    
 @app.route("/api/health")
 def health():
     return jsonify({"status": "ok"})
