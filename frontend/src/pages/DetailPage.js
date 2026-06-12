@@ -80,7 +80,7 @@ export default function DetailPage({ item, isMovie, profile, onBack, api }) {
           } else {
             const firstEp = item.episodes[0];
             setSelectedEp(null);
-            setSelectedSeason(1);
+            setSelectedSeason(firstEp ? firstEp.season : 1);
             setProgress(savedProgress);
           }
         })
