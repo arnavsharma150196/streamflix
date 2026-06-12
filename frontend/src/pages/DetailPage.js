@@ -306,6 +306,49 @@ const selectSubtitleTrack = async (track, ep) => {
     };
   }, []);
 
+  useEffect(() => {
+  const handleRemoteKey = (e) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    switch(e.keyCode) {
+      // Play/Pause
+      case 415:  // Play
+      case 19:   // Pause
+      case 179:  // MediaPlayPause
+        e.preventDefault();
+        video.paused ? video.play() : video.pause();
+        break;
+
+      // Seek forward 10s — FastForward
+      case 417:
+        e.preventDefault();
+        video.currentTime = Math.min(video.currentTime + 10, video.duration);
+        break;
+
+      // Seek backward 10s — Rewind
+      case 412:
+        e.preventDefault();
+        video.currentTime = Math.max(video.currentTime - 10, 0);
+        break;
+
+      // Back — LG, Samsung, Escape
+      case 461:  // LG Back
+      case 10009: // Samsung Back
+      case 27:   // Escape
+        e.preventDefault();
+        onBack();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  window.addEventListener('keydown', handleRemoteKey);
+  return () => window.removeEventListener('keydown', handleRemoteKey);
+}, [videoRef.current, selectedEp]);
+
   const handleFullscreen = () => {
     const container = playerContainerRef.current;
     if (!container) return;
