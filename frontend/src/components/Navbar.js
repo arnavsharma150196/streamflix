@@ -12,6 +12,7 @@ export default function Navbar({ activeProfile, onProfileSwitch, onLogout, libra
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef(null);
+  const [showSearch, setShowSearch] = useState(false);
 
   const tabs = [
     { label: 'Home', path: '/', icon: '🏠' },
@@ -21,7 +22,7 @@ export default function Navbar({ activeProfile, onProfileSwitch, onLogout, libra
   ];
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/profiles')
+    axios.get(`${api}/api/profiles`)
       .then(res => {
         const idx = res.data.findIndex(p => p.id === activeProfile?.id);
         setProfileIndex(idx >= 0 ? idx : 0);
@@ -50,6 +51,7 @@ export default function Navbar({ activeProfile, onProfileSwitch, onLogout, libra
     const handleClick = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowDropdown(false);
+        setShowSearch(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -108,100 +110,116 @@ export default function Navbar({ activeProfile, onProfileSwitch, onLogout, libra
           </div>
         </div>
 
-        {/* Center: Search */}
-        <div ref={searchRef} className="nav-search" style={{ position: 'relative' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center',
-            background: 'rgba(255,255,255,0.08)',
-            border: '1px solid #333', borderRadius: '6px',
-            padding: '6px 12px', gap: '8px'
-          }}>
-            <span style={{ color: '#666', fontSize: '14px' }}>🔍</span>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onFocus={() => results.length > 0 && setShowDropdown(true)}
-              style={{
-                background: 'transparent', border: 'none', outline: 'none',
-                color: '#fff', fontSize: '13px', width: '100%', fontFamily: 'Inter'
-              }}
-            />
-            {query && (
-              <span
-                onClick={() => { setQuery(''); setShowDropdown(false); }}
-                style={{ color: '#666', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
-              >×</span>
-            )}
-          </div>
+        {/* Search icon button — shows search bar on click */}
+        <div ref={searchRef} style={{ position: 'relative' }}>
+          <button
+            onClick={() => setShowSearch(prev => !prev)}
+            style={{
+              background: 'transparent', border: 'none',
+              color: '#aaa', fontSize: '20px', cursor: 'pointer',
+              padding: '4px 8px', lineHeight: 1
+            }}
+          >
+            🔍
+          </button>
 
-          {showDropdown && results.length > 0 && (
+          {showSearch && (
             <div style={{
-              position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0,
-              background: '#1a1a1a', border: '1px solid #333',
-              borderRadius: '8px', overflow: 'hidden',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.8)', zIndex: 100000
+              position: 'absolute', right: 0, top: '40px',
+              width: '280px', zIndex: 100001
             }}>
-              {results.map((item, i) => {
-                const title = item.title || item.show_name;
-                const genre = item.genres?.slice(0, 2).join(', ');
-                return (
-                  <div
-                    key={i}
-                    onClick={() => handleResultClick(item)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '12px',
-                      padding: '10px 14px', cursor: 'pointer',
-                      borderBottom: i < results.length - 1 ? '1px solid #2a2a2a' : 'none',
-                      transition: 'background 0.15s'
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#252525'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <div style={{
-                      width: '36px', height: '54px', borderRadius: '4px',
-                      overflow: 'hidden', flexShrink: 0, background: '#111'
-                    }}>
-                      {item.poster
-                        ? <img src={item.poster} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>🎬</div>
-                      }
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        color: '#fff', fontSize: '13px', fontWeight: 600,
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
-                      }}>{title}</div>
-                      <div style={{ color: '#888', fontSize: '11px', marginTop: '2px' }}>
-                        <span style={{
-                          color: item._isMovie ? '#E87C03' : '#3498DB',
-                          fontWeight: 600, marginRight: '6px'
+              <div style={{
+                display: 'flex', alignItems: 'center',
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid #333', borderRadius: '6px',
+                padding: '6px 12px', gap: '8px'
+              }}>
+                <span style={{ color: '#666', fontSize: '14px' }}>🔍</span>
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="Search..."
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  style={{
+                    background: 'transparent', border: 'none', outline: 'none',
+                    color: '#fff', fontSize: '13px', width: '100%', fontFamily: 'Inter'
+                  }}
+                />
+                {query && (
+                  <span
+                    onClick={() => { setQuery(''); setShowDropdown(false); }}
+                    style={{ color: '#666', cursor: 'pointer', fontSize: '16px' }}
+                  >×</span>
+                )}
+              </div>
+
+              {showDropdown && results.length > 0 && (
+                <div style={{
+                  background: '#1a1a1a', border: '1px solid #333',
+                  borderRadius: '8px', overflow: 'hidden',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
+                  marginTop: '8px'
+                }}>
+                  {results.map((item, i) => {
+                    const title = item.title || item.show_name;
+                    const genre = item.genres?.slice(0, 2).join(', ');
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => handleResultClick(item)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: '12px',
+                          padding: '10px 14px', cursor: 'pointer',
+                          borderBottom: i < results.length - 1 ? '1px solid #2a2a2a' : 'none',
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#252525'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <div style={{
+                          width: '36px', height: '54px', borderRadius: '4px',
+                          overflow: 'hidden', flexShrink: 0, background: '#111'
                         }}>
-                          {item._isMovie ? 'Movie' : 'TV Show'}
-                        </span>
-                        {genre}
+                          {item.poster
+                            ? <img src={item.poster} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>🎬</div>
+                          }
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{
+                            color: '#fff', fontSize: '13px', fontWeight: 600,
+                            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+                          }}>{title}</div>
+                          <div style={{ color: '#888', fontSize: '11px', marginTop: '2px' }}>
+                            <span style={{
+                              color: item._isMovie ? '#E87C03' : '#3498DB',
+                              fontWeight: 600, marginRight: '6px'
+                            }}>
+                              {item._isMovie ? 'Movie' : 'TV Show'}
+                            </span>
+                            {genre}
+                          </div>
+                        </div>
+                        {item.rating && (
+                          <div style={{ color: '#aaa', fontSize: '11px', flexShrink: 0 }}>
+                            ⭐ {item.rating}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    {item.rating && (
-                      <div style={{ color: '#aaa', fontSize: '11px', flexShrink: 0 }}>
-                        ⭐ {item.rating}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                    );
+                  })}
+                </div>
+              )}
 
-          {showDropdown && query.trim() && results.length === 0 && (
-            <div style={{
-              position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0,
-              background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px',
-              padding: '16px', textAlign: 'center', color: '#666', fontSize: '13px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.8)', zIndex: 100000
-            }}>
-              No results for "{query}"
+              {showDropdown && query.trim() && results.length === 0 && (
+                <div style={{
+                  background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px',
+                  padding: '16px', textAlign: 'center', color: '#666', fontSize: '13px',
+                  marginTop: '8px'
+                }}>
+                  No results for "{query}"
+                </div>
+              )}
             </div>
           )}
         </div>
