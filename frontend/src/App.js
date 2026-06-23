@@ -115,6 +115,81 @@ function MainApp({ library, libraryLoaded, activeProfile, onProfileSwitch, onLog
 
   const handleBack = () => setSelectedItem(null);
 
+  useEffect(() => {
+  const handleNav = (e) => {
+    // Only handle arrow keys and enter
+    if (![13, 37, 38, 39, 40].includes(e.keyCode)) return;
+
+    const focusable = Array.from(document.querySelectorAll(
+      'button, [tabindex="0"], a[href], input, select'
+    )).filter(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 &&
+             !el.disabled && el.tabIndex !== -1;
+    });
+
+    if (focusable.length === 0) return;
+
+    const current = document.activeElement;
+    const currentIndex = focusable.indexOf(current);
+
+    if (e.keyCode === 13) {
+      // Enter/OK — click current element
+      if (current && current !== document.body) {
+        e.preventDefault();
+        current.click();
+      } else {
+        focusable[0]?.focus();
+      }
+      return;
+    }
+
+    if (currentIndex === -1) {
+      e.preventDefault();
+      focusable[0]?.focus();
+      return;
+    }
+
+    const currentRect = current.getBoundingClientRect();
+    let best = null;
+    let bestScore = Infinity;
+
+    for (const el of focusable) {
+      if (el === current) continue;
+      const rect = el.getBoundingClientRect();
+      const dx = rect.left + rect.width / 2 - (currentRect.left + currentRect.width / 2);
+      const dy = rect.top + rect.height / 2 - (currentRect.top + currentRect.height / 2);
+
+      let valid = false;
+      if (e.keyCode === 39 && dx > 0) valid = true; // Right
+      if (e.keyCode === 37 && dx < 0) valid = true; // Left
+      if (e.keyCode === 40 && dy > 0) valid = true; // Down
+      if (e.keyCode === 38 && dy < 0) valid = true; // Up
+
+      if (!valid) continue;
+
+      // Score = weighted distance (primary axis weighted less)
+      const primaryDist = e.keyCode === 37 || e.keyCode === 39 ? Math.abs(dx) : Math.abs(dy);
+      const secondaryDist = e.keyCode === 37 || e.keyCode === 39 ? Math.abs(dy) : Math.abs(dx);
+      const score = primaryDist + secondaryDist * 2;
+
+      if (score < bestScore) {
+        bestScore = score;
+        best = el;
+      }
+    }
+
+    if (best) {
+      e.preventDefault();
+      best.focus();
+      best.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  };
+
+  window.addEventListener('keydown', handleNav);
+  return () => window.removeEventListener('keydown', handleNav);
+}, []);
+
   return (
     <div>
       <div style={{ position: 'relative', zIndex: 100000 }}>
